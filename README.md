@@ -1,1 +1,1 @@
-# isel-leic-shs.github.io
+# Repo made for the organization GitHub page
