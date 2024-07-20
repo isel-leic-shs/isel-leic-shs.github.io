@@ -6,6 +6,9 @@ import {StickyProvider} from "../contexts/app/app.provider";
 import IntegrationsPageContent from "../sections/integrations-page-content";
 
 export default function IntegrationsPage() {
+
+
+
     return (
         <ThemeProvider theme={theme}>
             <StickyProvider>

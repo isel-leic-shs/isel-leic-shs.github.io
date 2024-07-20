@@ -23,6 +23,41 @@ const data = [
 ];
 
 export default function ProjectsSection() {
+
+    /*let projects
+
+    useEffect(() => {
+        if (projects == undefined){
+            fetch(
+                serverAddress + "/user" ,{
+                    headers : {
+                        "Authorization" : "Bearer " + sessionStorage.getItem("shsToken")
+                    }
+                }
+            ).then(
+                (res) => {
+                    console.log(res)
+                    return res.json()
+                }
+            ).then(
+                (data) => {
+                    if (data.installedApps != undefined) {
+                        setUser(
+                            {
+                                nickname: data.name,
+                                token: undefined,
+                                installedApps: data.installedApps
+
+                            })//Switch installedApps for installationId's
+                    } else {
+                        setUser({nickname: data.name, token: undefined, installedApps: undefined})
+                    }
+                }
+            )
+        }
+    }, []);
+*/
+
     return (
         <section sx={{variant: 'section.feature'}}>
             <Container>

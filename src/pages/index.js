@@ -9,6 +9,10 @@ import FeaturesSection from 'sections/featuresSection';
 import WorkFlowSection from 'sections/workFlowSection';
 import IntegrationsSection from "../sections/IntegrationsSection";
 
+
+export const serverAddress = "https://localhost:8084"
+export const homepage = "https://isel-leic-shs.github.io/"
+
 export default function IndexPage() {
     return (
         <ThemeProvider theme={theme}>
