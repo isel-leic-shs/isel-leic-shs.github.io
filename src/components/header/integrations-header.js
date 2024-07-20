@@ -2,8 +2,11 @@
 import {Button, Container, Flex, jsx, Text} from 'theme-ui';
 import {keyframes} from '@emotion/core';
 import {DrawerProvider} from '../../contexts/drawer/drawer.provider';
+import {useEffect, useState} from "react";
+import {useLoggedIn} from "../../contexts/auth-context";
 
 export default function IntegrationsHeader({className, path, buttonTitle}) {
+    const {user} = useLoggedIn()
     return (
         <DrawerProvider>
             <header sx={styles.header} className={className} id="header">
@@ -25,10 +28,11 @@ export default function IntegrationsHeader({className, path, buttonTitle}) {
                                 {buttonTitle}
                             </Button>
                         </a>
-
-                        <Text as="p" variant="heroSecondary">
-                            Hey, Marsul!
-                        </Text>
+                        {
+                            user && <Text as="p" variant="heroSecondary">
+                                Hey, {user.nickname}!
+                            </Text>
+                        }
                     </Flex>
                 </Container>
             </header>

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import {Box, Button, Container, Flex, Heading, jsx, , Alert} from 'theme-ui';
+import {Box, Button, Container, Flex, Heading, jsx} from 'theme-ui';
 import BannerBG from 'assets/bannerBg.png';
 
 import client1 from 'assets/sponsor/paypal.svg';
@@ -7,8 +7,9 @@ import client2 from 'assets/sponsor/google.svg';
 import client3 from 'assets/sponsor/dropbox.svg';
 import AccessWorkFlowSteps from "./accessWorkFlowSteps";
 import ProjectsSection from "./ProjectsSection";
-import {homepage} from "../pages";
+import {homepage, serverAddress} from "../pages";
 import {useEffect, useState} from "react";
+import {useCurrentUser, useLoggedIn, useSetUser} from "../contexts/auth-context";
 
 
 const data = [
@@ -39,14 +40,43 @@ const appConfig = {
     gitAuthScopes: "read:user"
 }
 
+async function fetchUser(){
 
+    console.log("FetchingUser")
+    const response = await fetch(serverAddress + "/user" ,{
+        headers : {
+            "Authorization" : "Bearer " + sessionStorage.getItem("shsToken")
+        }
+    })
+    const data = await response.json()
+    let user
+    if (data.installedApps != undefined) {
+        user = {
+            nickname: data.name,
+            token: undefined,
+            installedApps: data.installedApps
+        }
+        console.log(JSON.stringify(user))
+        sessionStorage.setItem("user",JSON.stringify(user))//Switch installedApps for installationId's
+    } else {
+        user = {
+            nickname: data.name,
+            token: undefined,
+            installedApps: undefined
+
+        }
+        console.log(JSON.stringify(user))
+        sessionStorage.setItem("user",JSON.stringify(user))
+    }
+    return user
+}
 
 
 export default function IntegrationsPageContent() {
     const [loginUrl, setLoginUrl] = useState(undefined)
-    const [token,setToken] = useState(undefined)
+    const {user,setUser} = useLoggedIn()
 
-    useEffect(() => {
+    useEffect(async () => {
         function generateRandomState(length = 32) {
             const array = new Uint8Array(length);
             window.crypto.getRandomValues(array);
@@ -54,27 +84,28 @@ export default function IntegrationsPageContent() {
         }
         const gitState = generateRandomState()
         sessionStorage.setItem('git_oauth_state', gitState);
-        const token = sessionStorage.getItem("shsToken")
-        if (token != undefined) setToken(token)
-        const loginFlow =  appConfig.gitAuthorizationUri +
-            "?client_id=" + appConfig.gitClientId + "&" +
-            "redirect_uri=" + appConfig.gitRedirectUri + "&" +
-            "state=" + gitState  + "&" +
-            "scope=" + appConfig.gitAuthScopes
-        setLoginUrl(loginFlow)
+        if (user == undefined){
+            const token = sessionStorage.getItem("shsToken")
+            if (token != undefined) {
+                setUser(await fetchUser())
+            }else {
+                const loginFlow =  appConfig.gitAuthorizationUri +
+                    "?client_id=" + appConfig.gitClientId + "&" +
+                    "redirect_uri=" + appConfig.gitRedirectUri + "&" +
+                    "state=" + gitState  + "&" +
+                    "scope=" + appConfig.gitAuthScopes
+                setLoginUrl(loginFlow)
+            }
+        }
+
 
     }, []);
-    console.log(loginUrl)
-    console.log(token)
 
     return (
         <>
             <section sx={styles.banner} id="home">
                 <Container sx={styles.banner.container}>
-                    <Alert>
-                        Logged-in Successfully!
-                        <Close ml="auto" mr={-2} />
-                    </Alert>
+
                     <Box sx={styles.banner.contentBox}>
                         <Heading as="h1" variant="heroPrimary">
                             SHS Integrations
@@ -82,7 +113,7 @@ export default function IntegrationsPageContent() {
                         <AccessWorkFlowSteps />
                         <Flex>
                             {
-                                token ? <a href="/new-integration">
+                                user ? <a href="/new-integration">
                                     <Button variant="whiteButton" aria-label="Get Started">
                                         Configure Integration
                                     </Button>

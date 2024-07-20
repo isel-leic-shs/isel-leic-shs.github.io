@@ -4,14 +4,17 @@ import {ThemeProvider} from "theme-ui";
 import theme from "../theme";
 import {StickyProvider} from "../contexts/app/app.provider";
 import NewIntegrationPageContent from "../sections/new-integration-page-content";
+import {LoggedInProvider} from "../contexts/auth-context";
 
 export default function NewIntegrationPage() {
     return (
         <ThemeProvider theme={theme}>
             <StickyProvider>
-                <Layout reserved path="/integrations" buttonTitle="Go Back">
-                    <NewIntegrationPageContent/>
-                </Layout>
+                <LoggedInProvider>
+                    <Layout reserved path="/integrations" buttonTitle="Go Back">
+                        <NewIntegrationPageContent/>
+                    </Layout>
+                </LoggedInProvider>
             </StickyProvider>
         </ThemeProvider>
     );
