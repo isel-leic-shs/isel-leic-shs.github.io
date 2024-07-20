@@ -1,0 +1,1 @@
+{"ast":null,"code":"export default [{\n  path: 'home',\n  label: 'SHS'\n}, {\n  path: 'features',\n  label: 'Features'\n}, {\n  path: 'philosophy',\n  label: 'Philosophy'\n}, {\n  path: 'integrations',\n  label: 'Integrations'\n}, {\n  path: 'workflow',\n  label: 'Workflow'\n}];","map":null,"metadata":{},"sourceType":"module"}
