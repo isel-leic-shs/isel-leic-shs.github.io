@@ -46,14 +46,6 @@ jobs:
       - name: Export
         run: npm run export
 
-      - name: List root directory contents
-        run: ls -la /
-
-      - name: List /out directory contents
-        run: echo "$GITHUB_WORKSPACE/out"
-        continue-on-error: true
-
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

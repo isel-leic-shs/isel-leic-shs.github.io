@@ -8,6 +8,8 @@ import client3 from 'assets/sponsor/dropbox.svg';
 import AccessWorkFlowSteps from "./accessWorkFlowSteps";
 import ProjectsSection from "./ProjectsSection";
 import {homepage} from "../pages";
+import {useEffect, useState} from "react";
+
 
 const data = [
     {
@@ -36,23 +38,35 @@ const appConfig = {
     gitRedirectUri : homepage + "/exchange",
     gitAuthScopes: "read:user"
 }
-function generateRandomState(length = 32) {
-    const array = new Uint8Array(length);
-    window.crypto.getRandomValues(array);
-    return Array.from(array, (byte) => ('0' + byte.toString(16)).slice(-2)).join('');
-}
+
 
 
 
 export default function IntegrationsPageContent() {
-    const gitState = generateRandomState();
-    sessionStorage.setItem('git_oauth_state', gitState);
-    const loginFlow =  appConfig.gitAuthorizationUri +
-        "?client_id=" + appConfig.gitClientId + "&" +
-        "redirect_uri=" + appConfig.gitRedirectUri + "&" +
-        "state=" + gitState  + "&" +
-        "scope=" + appConfig.gitAuthScopes
-    const log = sessionStorage.getItem("shsToken") != undefined
+    const [loginUrl, setLoginUrl] = useState(undefined)
+    const [token,setToken] = useState(undefined)
+
+    useEffect(() => {
+        function generateRandomState(length = 32) {
+            const array = new Uint8Array(length);
+            window.crypto.getRandomValues(array);
+            return Array.from(array, (byte) => ('0' + byte.toString(16)).slice(-2)).join('');
+        }
+        const gitState = generateRandomState()
+        sessionStorage.setItem('git_oauth_state', gitState);
+        const token = sessionStorage.getItem("shsToken")
+        if (token != undefined) setToken(token)
+        const loginFlow =  appConfig.gitAuthorizationUri +
+            "?client_id=" + appConfig.gitClientId + "&" +
+            "redirect_uri=" + appConfig.gitRedirectUri + "&" +
+            "state=" + gitState  + "&" +
+            "scope=" + appConfig.gitAuthScopes
+        setLoginUrl(loginFlow)
+
+    }, []);
+    console.log(loginUrl)
+    console.log(token)
+
     return (
         <>
             <section sx={styles.banner} id="home">
@@ -64,11 +78,11 @@ export default function IntegrationsPageContent() {
                         <AccessWorkFlowSteps />
                         <Flex>
                             {
-                                log ? <a href="/new-integration">
+                                token ? <a href="/new-integration">
                                     <Button variant="whiteButton" aria-label="Get Started">
                                         Configure Integration
                                     </Button>
-                                </a> : <a href={loginFlow}>
+                                </a> : <a href={loginUrl}>
                                     <Button variant="whiteButton" aria-label="Get Started">
                                         Login
                                     </Button>
