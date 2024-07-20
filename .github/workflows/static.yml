@@ -49,7 +49,7 @@ jobs:
         run: ls -la /
 
       - name: List /out directory contents
-        run: echo ${{env.GITHUB_WORKSPACE}}/out
+        run: echo "$GITHUB_WORKSPACE/out"
         continue-on-error: true
 
 
@@ -60,7 +60,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: ${{env.GITHUB_WORKSPACE}}/out
+          path: "$GITHUB_WORKSPACE/out"
 
       - name: Deploy to GitHub Pages
         id: deployment
