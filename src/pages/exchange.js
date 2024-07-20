@@ -2,6 +2,7 @@ import {useEffect} from "react";
 
 
 export default function ExchangePage() {
+
     useEffect(() => {
         console.log("RUNNING")
         const urlParams = new URLSearchParams(window.location.search);

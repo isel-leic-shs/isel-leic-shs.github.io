@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import {Box, Button, Container, Flex, Heading, jsx, Text} from 'theme-ui';
+import {Box, Button, Container, Flex, Heading, jsx, , Alert} from 'theme-ui';
 import BannerBG from 'assets/bannerBg.png';
 
 import client1 from 'assets/sponsor/paypal.svg';
@@ -71,6 +71,10 @@ export default function IntegrationsPageContent() {
         <>
             <section sx={styles.banner} id="home">
                 <Container sx={styles.banner.container}>
+                    <Alert>
+                        Logged-in Successfully!
+                        <Close ml="auto" mr={-2} />
+                    </Alert>
                     <Box sx={styles.banner.contentBox}>
                         <Heading as="h1" variant="heroPrimary">
                             SHS Integrations
