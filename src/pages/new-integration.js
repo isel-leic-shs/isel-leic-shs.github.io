@@ -5,6 +5,7 @@ import theme from "../theme";
 import {StickyProvider} from "../contexts/app/app.provider";
 import NewIntegrationPageContent from "../sections/new-integration-page-content";
 import {LoggedInProvider} from "../contexts/auth-context";
+import {NewIntegrationProvider} from "../contexts/new-integration-context";
 
 export default function NewIntegrationPage() {
     return (
@@ -12,7 +13,9 @@ export default function NewIntegrationPage() {
             <StickyProvider>
                 <LoggedInProvider>
                     <Layout reserved path="/integrations" buttonTitle="Go Back">
-                        <NewIntegrationPageContent/>
+                        <NewIntegrationProvider>
+                            <NewIntegrationPageContent/>
+                        </NewIntegrationProvider>
                     </Layout>
                 </LoggedInProvider>
             </StickyProvider>

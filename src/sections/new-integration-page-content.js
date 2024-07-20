@@ -6,6 +6,8 @@ import client1 from 'assets/sponsor/paypal.svg';
 import client2 from 'assets/sponsor/google.svg';
 import client3 from 'assets/sponsor/dropbox.svg';
 import Stepper from 'react-stepper-horizontal'
+import {useContext, useState} from "react";
+import {NewIntegrationContext, NewIntegrationProvider} from "../contexts/new-integration-context";
 
 const data = [
     {
@@ -29,7 +31,7 @@ const data = [
 ];
 
 export default function NewIntegrationPageContent() {
-
+    const activeStep = useContext(NewIntegrationContext)
     return (
         <>
             <section sx={styles.banner} id="home">
@@ -41,8 +43,23 @@ export default function NewIntegrationPageContent() {
                     </Box>
                 </Container>
             </section>
-            <Stepper steps={[{title: 'Step One'}, {title: 'Step Two'}, {title: 'Step Three'}, {title: 'Step Four'}]}
-                     activeStep={1}/>
+
+                <div>
+                    <Stepper steps={activeStep.steps} activeStep={activeStep.page}/>
+
+                    {activeStep.page === 0 && <Heading as="h1">
+                        222
+                    </Heading>}
+                    {activeStep.page === 1 && <Heading as="h1">
+                        222
+                    </Heading>}
+                    {activeStep.page === 2 && <Heading as="h1">
+                        333
+                    </Heading>}
+                    {activeStep.page === 3 && <Heading as="h1">
+                        yes
+                    </Heading>}
+                </div>
         </>
     );
 }
