@@ -27,7 +27,7 @@ export default function IntegrationsHeader({className, path, buttonTitle}) {
                         </a>
 
                         <Text as="p" variant="heroSecondary">
-                            Hey, Simão Cabral!
+                            Hey, Marsul!
                         </Text>
                     </Flex>
                 </Container>
