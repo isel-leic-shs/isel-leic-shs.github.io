@@ -40,7 +40,7 @@ const appConfig = {
     gitAuthScopes: "read:user"
 }
 
-async function fetchUser(){
+export async function fetchUser(){
 
     console.log("FetchingUser")
     const response = await fetch(serverAddress + "/user" ,{
@@ -48,9 +48,13 @@ async function fetchUser(){
             "Authorization" : "Bearer " + sessionStorage.getItem("shsToken")
         }
     })
+    if (!response.ok) {
+        console.log(response.statusText)
+        throw new Error("Error:" + response.statusText)
+    }
     const data = await response.json()
     let user
-    if (data.installedApps != undefined) {
+    if (data.installedApps !== undefined) {
         user = {
             nickname: data.name,
             token: undefined,

@@ -1,53 +1,75 @@
-const InstallGit = (props) => {
-    const val = useContext(LabelContext);
-    const [shipping, setshipping] = React.useState("");
-    const setId = (event) => {
-        event.preventDefault();
-        setshipping(event.target.value);
-    };
-    const btnDisbaled = shipping.length > 0;
+import React, {useContext, useEffect} from "react";
+import {Box, Button, Card, Heading, jsx, Text} from "theme-ui";
+import {NewIntegrationContext} from "../../contexts/new-integration-context";
+import {LoggedInContext, useLoggedIn} from "../../contexts/auth-context";
+
+
+export default function InstallGit() {
+    const value = useContext(NewIntegrationContext)
+    const {user} = useLoggedIn()
+
+    if (user !== undefined){
+        if (user.installedApps !== undefined)  value.nextPage()
+    }
+
+
 
     return (
-        <form>
-            <h4> Select shipping option</h4>
-            <RadioGroup
-                aria-label="weight"
-                name="weight"
-                value={shipping}
-                className="form"
-                onChange={setId}
-            >
-                <FormControlLabel
-                    control={<Radio />}
-                    label="Ground"
-                    value="1"
-                    onChange={val.handleChange("shippingOption")}
-                />
-                <FormControlLabel
-                    control={<Radio />}
-                    label="Priority"
-                    value="2"
-                    onChange={val.handleChange("shippingOption")}
-                />
-            </RadioGroup>
-            <ButtonGroup
-                variant="contained"
-                color="primary"
-                aria-label="text primary button group"
-                style={{ marginTop: 15 }}
-            >
-                <Button onClick={() => val.prevPage()} style={{ margin: 25 }}>
-                    Previous
-                </Button>
+
+        <Card key="install-card" sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            alignItems: 'center',
+        }
+
+        }>
+            <Box sx={{
+                padding: 16,
+                boxShadow: '0 0 8px rgba(0, 0, 0, 0.125)',
+            }}>
+                <Text sx={styles.wrapper.title}>
+                    So that we can interact with your repository, you need to install our Github App.
+                </Text>
+                <Text sx={styles.wrapper.title}>
+                    To do so just click the link below!
+                </Text>
+
+            </Box>
+            <a href="https://github.com/apps/sec-hound-service/installations/new?state=loggedIn">
                 <Button
-                    disabled={!btnDisbaled}
-                    onClick={() => val.nextPage()}
-                    style={{ margin: 25 }}
                 >
-                    Next
+                    Install Github App
                 </Button>
-            </ButtonGroup>
-        </form>
-    );
+            </a>
+
+        </Card>
+
+    )
 };
-export default GetShippingOption;
+
+const styles = {
+    wrapper: {
+        width: '100%',
+        display: 'flex',
+        padding: 16,
+        flexDirection: 'column',
+        title: {
+            fontSize: 3,
+            color: 'heading_secondary',
+            lineHeight: 1.4,
+            fontWeight: 700,
+            mb: [2, null, null, null, 3],
+        },
+
+        subTitle: {
+            fontSize: 1,
+            fontWeight: 400,
+            lineHeight: [1.85, null, 2],
+        },
+        borderRadius: 4,
+        boxShadow: '0 0 8px rgba(0, 0, 0, 0.125)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
+}

@@ -6,8 +6,14 @@ import client1 from 'assets/sponsor/paypal.svg';
 import client2 from 'assets/sponsor/google.svg';
 import client3 from 'assets/sponsor/dropbox.svg';
 import Stepper from 'react-stepper-horizontal'
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {NewIntegrationContext, NewIntegrationProvider} from "../contexts/new-integration-context";
+import InstallGit from "../components/steps/installGit";
+import SelectGit from "../components/steps/selectGit";
+import InstallSlack from "../components/steps/installSlack";
+import ReadyForToken from "../components/steps/sucess";
+import {useLoggedIn} from "../contexts/auth-context";
+import {fetchUser} from "./integrations-page-content";
 
 const data = [
     {
@@ -32,6 +38,10 @@ const data = [
 
 export default function NewIntegrationPageContent() {
     const activeStep = useContext(NewIntegrationContext)
+    const {user,setUser} = useLoggedIn()
+    useEffect(async () => {
+        setUser(await fetchUser())
+    }, []);
     return (
         <>
             <section sx={styles.banner} id="home">
@@ -44,22 +54,13 @@ export default function NewIntegrationPageContent() {
                 </Container>
             </section>
 
-                <div>
-                    <Stepper steps={activeStep.steps} activeStep={activeStep.page}/>
 
-                    {activeStep.page === 0 && <Heading as="h1">
-                        222
-                    </Heading>}
-                    {activeStep.page === 1 && <Heading as="h1">
-                        222
-                    </Heading>}
-                    {activeStep.page === 2 && <Heading as="h1">
-                        333
-                    </Heading>}
-                    {activeStep.page === 3 && <Heading as="h1">
-                        yes
-                    </Heading>}
-                </div>
+            <Stepper steps={activeStep.steps} activeStep={activeStep.page}/>
+            {activeStep.page === 0 && <InstallGit/>}
+            {activeStep.page === 1 && <SelectGit/>}
+            {activeStep.page === 2 && <InstallSlack/>}
+            {activeStep.page === 3 && <ReadyForToken/>}
+
         </>
     );
 }
@@ -121,4 +122,5 @@ const styles = {
             },
         },
     },
+
 };

@@ -11,7 +11,7 @@ import IntegrationsSection from "../sections/IntegrationsSection";
 
 
 export const serverAddress = "https://localhost:8084"
-export const homepage = "http://localhost:3000" //"https://isel-leic-shs.github.io" //
+export const homepage = "https://81b4-85-240-18-78.ngrok-free.app" //http://localhost:3000" //"https://isel-leic-shs.github.io" //
 
 export default function IndexPage() {
     return (

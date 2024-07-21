@@ -1,7 +1,7 @@
 import {createContext, useContext, useEffect, useState} from "react";
 
 
-const LoggedInContext = createContext(undefined)
+export const LoggedInContext = createContext(undefined)
 
 
 export function LoggedInProvider({children}) {
@@ -9,9 +9,10 @@ export function LoggedInProvider({children}) {
 
     useEffect(() => {
         setUser(JSON.parse(sessionStorage.getItem("user")))
+        console.log(`AuthnContainer: ${user}` )
     }, []);
 
-    console.log(`AuthnContainer: ${user}`)
+
     return (
         <LoggedInContext.Provider value={{user, setUser}}>
             {children}

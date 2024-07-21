@@ -32,7 +32,7 @@ export default function SlackExchangePage() {
                         console.error('Error fetching token:', error);
                     });
             }
-        }
+        },[]
     )
     return (<div/>)
 
