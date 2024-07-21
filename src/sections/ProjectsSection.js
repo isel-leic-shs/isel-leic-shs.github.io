@@ -1,33 +1,22 @@
 /** @jsx jsx */
 import {Box, Card, Container, Grid, Heading, jsx, Text} from 'theme-ui';
 
-const data = [
-    {
-        id: 1,
-        title: 'https://github.com/isel-leic-shs',
-        text:
-            'Installed in SHS Organization',
-    },
-    {
-        id: 2,
-        title: 'Backstage Org',
-        text:
-            'Installed in Backstage Organization',
-    },
-    {
-        id: 3,
-        title: 'Simao Account',
-        text:
-            'Installed for Simao account',
-    },
-];
+import {useLoggedIn} from "../contexts/auth-context";
+
 
 export default function ProjectsSection() {
+    const { user } = useLoggedIn();
 
+    // if user is not logged in, return nothing
+    if (!user) {
+        return <div></div>;
+    }
+
+    console.log(user);
     return (
-        <section sx={{variant: 'section.feature'}}>
+        <section sx={{ variant: 'section.feature' }}>
             <Container>
-                <Box sx={{variant: 'sectionHeader'}}>
+                <Box sx={{ variant: 'sectionHeader' }}>
                     <Heading
                         as="h3"
                         sx={{
@@ -40,15 +29,36 @@ export default function ProjectsSection() {
                 </Box>
 
                 <Grid sx={styles.grid}>
-                    {data.map((item) => (
-                        <Card key={item.id} sx={{
-                            padding: 2,
-                            borderRadius: 4,
-                            boxShadow: '0 0 8px rgba(0, 0, 0, 0.125)',
-                        }}>
+                    {user.installedApps.map((item) => (
+                        <Card
+                            key={item.name}
+                            sx={{
+                                padding: 2,
+                                borderRadius: 4,
+                                boxShadow: '0 0 8px rgba(0, 0, 0, 0.125)',
+                            }}
+                        >
                             <Box sx={styles.wrapper}>
-                                <Heading sx={styles.wrapper.title}>{item.title}</Heading>
-                                <Text sx={styles.wrapper.subTitle}>{item.text}</Text>
+                                <Heading sx={styles.wrapper.title}>{item.name}</Heading>
+                                <Text sx={{ fontWeight: 'bold', mt: 2 }}>
+                                    Slack: {item.slack ? 'Configured' : 'Not Configured'}
+                                </Text>
+                                <Text sx={{ fontWeight: 'bold', mt: 3 }}>Repositories:</Text>
+                                {item.repositories.map((repo) => (
+                                    <Box
+                                        key={repo.fullName}
+                                        sx={{
+                                            border: '1px solid',
+                                            borderColor: 'muted',
+                                            borderRadius: 4,
+                                            padding: 2,
+                                            mt: 2,
+                                        }}
+                                    >
+                                        <Text>Name: {repo.name}</Text>
+                                        <Text>Visibility: {repo.private ? 'Private' : 'Public'}</Text>
+                                    </Box>
+                                ))}
                             </Box>
                         </Card>
                     ))}
@@ -57,7 +67,6 @@ export default function ProjectsSection() {
         </section>
     );
 }
-
 const styles = {
     grid: {
         pt: [0, null, null, null, null, null, null, 3],
